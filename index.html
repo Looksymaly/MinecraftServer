@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anarchy Realms</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0b0b0b; --panel:#0f0f13; --accent:#d33b3b; --muted:#9aa0a6; --glass:rgba(255,255,255,0.03);
+  --radius:12px; --gap:28px; --pad:50px; font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
+}
+*{box-sizing:border-box}
+#viewerWrap {
+    height: 50px; /* or any fixed height you want */
+    border-radius: 0px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg,#0b0b0b,#071018);
+}
+
+#threeCanvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
+
+html,body{height:100%;margin:0;background:linear-gradient(180deg,#050505 0%, #0c0c0c 100%);color:#e9eef2}
+a{color:inherit; text-decoration:none;}
+header{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,#222223,#0b0b0b);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--accent);box-shadow:0 6px 18px rgba(0,0,0,0.6)}
+.title{font-weight:800;font-size:1.05rem;letter-spacing:0.6px}
+nav{display:flex;gap:12px}
+nav a{padding:8px 12px;border-radius:8px;background:transparent;color:var(--muted);font-size:0.95rem}
+nav a.cta{background:var(--accent);color:#fff;font-weight:600}
+.container{max-width:1100px;margin:18px auto;padding:0 18px}
+.hero{display:grid;grid-template-columns:1fr 420px;gap:24px;align-items:center;margin-top:10px}
+.card{background:var(--panel);border-radius:var(--radius);padding:22px;box-shadow:0 6px 22px rgba(0,0,0,0.6);}
+.hero .left h1{margin:0 0 10px;font-size:2.05rem}
+.meta{color:var(--muted);margin-bottom:14px}
+.controls{display:flex;gap:10px}
+.btn{background:var(--glass);border:1px solid rgba(255,255,255,0.03);padding:10px 14px;border-radius:10px;color:#e9eef2;font-weight:600;cursor:pointer}
+.btn.primary{background:linear-gradient(90deg,var(--accent),#ff6b6b);border:none}
+.ip{font-family:monospace;background:rgba(0,0,0,0.25);padding:8px 10px;border-radius:8px}
+#viewerWrap{height:360px;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#0b0b0b,#071018)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.small{padding:14px}
+.muted{color:var(--muted);font-size:0.92rem}
+footer{margin:28px 0 60px;text-align:center;color:var(--muted);font-size:0.9rem}
+@media (max-width:980px){.hero{grid-template-columns:1fr;}#viewerWrap{height:320px}.grid3{grid-template-columns:1fr}}
+.players{display:flex;gap:8px;align-items:center}.player-dot{width:10px;height:10px;border-radius:50%;background:#2fe08a}
+.section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.donate{background:#151515;padding:10px;border-radius:10px}
+.socials{display:flex;gap:8px}.socials a{padding:8px;border-radius:8px;background:rgba(255,255,255,0.02);font-weight:600}
+</style>
+</head>
+<body>
+<header class="container">
+<div class="brand">
+<div class="logo">AR</div>
+<div>
+<div class="title">Anarchy Realms</div>
+<div class="muted" style="font-size:0.82rem">Minecraft • Adventure & Community</div>
+</div>
+</div>
+<nav>
+<a href="#home">Home</a>
+<a href="#donate">Donate</a>
+<a href="#community">Community</a>
+<a class="cta" href="#join">Join</a>
+</nav>
+</header>
+<main class="container" id="home">
+<section class="hero">
+<div class="card left">
+<h1>Anarchy Realms — Join the Adventure</h1>
+<p class="meta">Experience survival, building, and fun in our Minecraft world. Connect with friends and explore the server together.</p>
+<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+<div class="ip card" style="display:flex;align-items:center;gap:10px">
+<div style="min-width:72px">IP:</div>
+<div style="font-weight:700" id="serverIp">AnarchyRealms.enderman.cloud</div>
+<button class="btn" id="copyIp">Copy</button>
+</div>
+<div class="controls">
+<button class="btn primary" id="joinBtn">Join Server</button>
+<button class="btn" id="discordBtn">Discord</button>
+</div>
+</div>
+<div class="grid3" style="margin-top:18px">
+<div class="card small">
+<div class="section-title"><strong>Players</strong><span class="muted">Live</span></div>
+<div class="players"><div class="player-dot"></div><div id="playerCount" style="font-weight:700">0</div><div class="muted">online</div></div>
+<div class="muted" style="margin-top:8px">Shows real player count if server is online.</div>
+</div>
+<div class="card small">
+<div class="section-title"><strong>Version</strong><span class="muted">1.20+</span></div>
+<div class="muted">Server supports modern Minecraft versions. Use the IP above to connect.</div>
+</div>
+<div class="card small">
+<div class="section-title"><strong>Rules</strong><span class="muted">Friendly Play</span></div>
+<div class="muted">Be respectful, have fun, and enjoy your time on Anarchy Realms.</div>
+</div>
+</div>
+</div>
+<div class="card" id="viewerWrap">
+  <canvas id="threeCanvas"></canvas>
+</div>
+</section>
+<section id="donate" style="margin-top:18px">
+<div class="card">
+<div class="section-title"><strong>Donate / Support</strong><span class="muted">Keep the server online</span></div>
+<p class="muted">Help support Anarchy Realms! Every donation goes directly to maintaining the server and improving the experience for all players.</p>
+<a href="https://www.paypal.com/paypalme/cgchrispodfsq" target="_blank" class="btn primary" style="margin-top:12px">Donate via PayPal</a>
+</div>
+</section>
+<section id="community" style="margin-top:18px">
+<div class="card">
+<div class="section-title"><strong>Community</strong><span class="muted">Discord & social</span></div>
+<p class="muted">Join our Discord to meet players, share builds, and participate in events.</p>
+<div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
+<a class="btn" href="https://discord.gg/pSxumcACUg" target="_blank" id="discordLink">Discord</a>
+<a class="btn" href="#">Forums</a>
+<a class="btn" href="#">Apply</a>
+</div>
+</div>
+</section>
+</main>
+<footer>
+<div>© Anarchy Realms — Built with ❤️ for the community</div>
+</footer>
+<script src="https://unpkg.com/three@0.157.0/build/three.min.js"></script>
+<script>
+// 3D logo setup
+(function(){
+const canvas = document.getElementById('threeCanvas');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+renderer.setPixelRatio(window.devicePixelRatio || 1);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45,1,0.1,100);
+camera.position.set(3,3,6);
+const light = new THREE.HemisphereLight(0xffffff,0x222222,1.1);
+scene.add(light);
+const geometry = new THREE.TorusKnotGeometry(1,0.3,128,32);
+const material = new THREE.MeshStandardMaterial({color:0xd33b3b, metalness:0.7, roughness:0.3});
+const torus = new THREE.Mesh(geometry, material);
+scene.add(torus);
+function resize(){renderer.setSize(canvas.clientWidth,canvas.clientHeight);camera.aspect=canvas.clientWidth/canvas.clientHeight;camera.updateProjectionMatrix();}
+window.addEventListener('resize',resize);
+resize();
+function animate(){requestAnimationFrame(animate);torus.rotation.x+=0.01;torus.rotation.y+=0.01;renderer.render(scene,camera);}
+animate();
+})();
+
+// Server status
+const serverIp = 'AnarchyRealms.enderman.cloud';
+const playerEl = document.getElementById('playerCount');
+const dot = document.querySelector('.player-dot');
+
+async function updateServerStatus(){
+    try {
+        const res = await fetch(`https://api.mcsrvstat.us/2/${serverIp}`);
+        const data = await res.json();
+        
+        if(data.online){
+            playerEl.innerText = data.players?.online ?? 0;
+            playerEl.style.color = '#2fe08a';
+            dot.style.background = '#2fe08a';
+        } else if (data && data.online === false){
+            playerEl.innerText = 'Offline';
+            playerEl.style.color = '#d33b3b';
+            dot.style.background = '#d33b3b';
+        } else {
+            playerEl.innerText = 'Sleeping';
+            playerEl.style.color = '#f0b90b';
+            dot.style.background = '#f0b90b';
+        }
+    } catch(err){
+        playerEl.innerText = 'Offline';
+        playerEl.style.color = '#d33b3b';
+        dot.style.background = '#d33b3b';
+        console.error('Error fetching server status:', err);
+    }
+}
+updateServerStatus();
+setInterval(updateServerStatus, 5000);
+
+// Copy IP button
+document.getElementById('copyIp').addEventListener('click', () => {
+    navigator.clipboard.writeText(serverIp).then(()=>{alert('IP copied!');});
+});
+
+// Discord button
+document.getElementById('discordBtn').addEventListener('click', ()=>{
+    window.open('https://discord.gg/pSxumcACUg','_blank');
+});
+</script>
+</body>
+</html>
